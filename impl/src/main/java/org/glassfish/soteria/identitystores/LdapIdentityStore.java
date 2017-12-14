@@ -41,45 +41,48 @@
 package org.glassfish.soteria.identitystores;
 
 
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.list;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.logging.Level.FINEST;
+import static javax.naming.Context.INITIAL_CONTEXT_FACTORY;
+import static javax.naming.Context.PROVIDER_URL;
+import static javax.naming.Context.SECURITY_AUTHENTICATION;
+import static javax.naming.Context.SECURITY_CREDENTIALS;
+import static javax.naming.Context.SECURITY_PRINCIPAL;
+import static javax.naming.directory.SearchControls.ONELEVEL_SCOPE;
+import static javax.naming.directory.SearchControls.SUBTREE_SCOPE;
+import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
+import static javax.security.enterprise.identitystore.CredentialValidationResult.NOT_VALIDATED_RESULT;
+
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import javax.naming.AuthenticationException;
 import javax.naming.CommunicationException;
-import javax.naming.InterruptedNamingException;
-import javax.naming.InvalidNameException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.NamingSecurityException;
 import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.InvalidSearchControlsException;
 import javax.naming.directory.InvalidSearchFilterException;
-import javax.naming.directory.NoSuchAttributeException;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import javax.naming.ldap.LdapName;
-import javax.naming.ldap.Rdn;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import javax.security.enterprise.identitystore.IdentityStorePermission;
 import javax.security.enterprise.identitystore.LdapIdentityStoreDefinition;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static java.util.Collections.*;
-import static java.util.logging.Level.FINEST;
-import static javax.naming.Context.*;
-import static javax.naming.directory.SearchControls.ONELEVEL_SCOPE;
-import static javax.naming.directory.SearchControls.SUBTREE_SCOPE;
-import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
-import static javax.security.enterprise.identitystore.CredentialValidationResult.NOT_VALIDATED_RESULT;
-import static javax.security.enterprise.identitystore.LdapIdentityStoreDefinition.LdapSearchScope;
+import javax.security.enterprise.identitystore.LdapIdentityStoreDefinition.LdapSearchScope;
 
 public class LdapIdentityStore implements IdentityStore {
 
@@ -95,8 +98,7 @@ public class LdapIdentityStore implements IdentityStore {
     private static void debug(String method, String message, Throwable thrown) {
         if (thrown != null) {
             LOGGER.logp(FINEST, LdapIdentityStore.class.getName(), method, message, thrown);
-        }
-        else {
+        } else {
             LOGGER.logp(FINEST, LdapIdentityStore.class.getName(), method, message);
         }
     }

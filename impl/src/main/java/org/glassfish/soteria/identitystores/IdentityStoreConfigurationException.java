@@ -42,15 +42,17 @@ package org.glassfish.soteria.identitystores;
 
 public class IdentityStoreConfigurationException extends IdentityStoreException {
 
-  public IdentityStoreConfigurationException(String message, Throwable cause) {
-    super(message,cause);
-  }
+    private static final long serialVersionUID = 1L;
 
-  public IdentityStoreConfigurationException(Throwable cause) {
-    super(cause);
-  }
+    public IdentityStoreConfigurationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  public IdentityStoreConfigurationException(String message) {
-    super(message);
-  }
+    public IdentityStoreConfigurationException(Throwable cause) {
+        super(cause);
+    }
+
+    public IdentityStoreConfigurationException(String message) {
+        super(message);
+    }
 }

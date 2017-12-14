@@ -47,10 +47,8 @@ import java.io.IOException;
 import java.security.AccessController;
 import java.security.Principal;
 import java.security.PrivilegedAction;
-import java.util.List;
 import java.util.Set;
 
-import javax.security.enterprise.AuthenticationStatus;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -61,6 +59,7 @@ import javax.security.auth.message.callback.CallerPrincipalCallback;
 import javax.security.auth.message.callback.GroupPrincipalCallback;
 import javax.security.auth.message.config.AuthConfigFactory;
 import javax.security.auth.message.module.ServerAuthModule;
+import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

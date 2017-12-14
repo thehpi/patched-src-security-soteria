@@ -128,54 +128,54 @@ public class CdiProducer<T> implements Bean<T>, PassivationCapable {
         return false;
     }
     
-    protected CdiProducer<T> active(boolean active) {
+    public CdiProducer<T> active(boolean active) {
         return this;
     }
     
-    protected CdiProducer<T> name(String name) {
+    public CdiProducer<T> name(String name) {
         this.name = name;
         return this;
     }
     
-    protected CdiProducer<T> create(Function<CreationalContext<T>, T> create) {
+    public CdiProducer<T> create(Function<CreationalContext<T>, T> create) {
         this.create = create;
         return this;
     }
     
-    protected CdiProducer<T> beanClass(Class<?> beanClass) {
+    public CdiProducer<T> beanClass(Class<?> beanClass) {
         this.beanClass = beanClass;
         return this;
     }
     
-    protected CdiProducer<T> types(Type... types) {
+    public CdiProducer<T> types(Type... types) {
         this.types = asSet(types);
         return this;
     }
     
-    protected CdiProducer<T> beanClassAndType(Class<?> beanClass) {
+    public CdiProducer<T> beanClassAndType(Class<?> beanClass) {
         beanClass(beanClass);
         types(beanClass);
         return this;
     }
     
-    protected CdiProducer<T> qualifiers(Annotation... qualifiers) {
+    public CdiProducer<T> qualifiers(Annotation... qualifiers) {
         this.qualifiers = asSet(qualifiers);
         return this;
     }
     
     
-    protected CdiProducer<T> scope(Class<? extends Annotation> scope) {
+    public CdiProducer<T> scope(Class<? extends Annotation> scope) {
         this.scope = scope;
         return this;
     }
     
-    protected CdiProducer<T> addToId(Object object) {
+    public CdiProducer<T> addToId(Object object) {
         id = id + " " + object.toString();
         return this;
     }
     
     @SafeVarargs
-    protected static <T> Set<T> asSet(T... a) {
+    public static <T> Set<T> asSet(T... a) {
         return new HashSet<>(asList(a));
     }
     

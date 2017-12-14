@@ -50,7 +50,6 @@ import java.io.Serializable;
 import java.security.Principal;
 
 import javax.annotation.Priority;
-import javax.el.ELProcessor;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;

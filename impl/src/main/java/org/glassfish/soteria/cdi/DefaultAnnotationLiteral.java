@@ -48,6 +48,6 @@ import javax.enterprise.util.AnnotationLiteral;
  * 
  */
 @SuppressWarnings("all")
-class DefaultAnnotationLiteral extends AnnotationLiteral<Default> implements Default {
+public class DefaultAnnotationLiteral extends AnnotationLiteral<Default> implements Default {
     private static final long serialVersionUID = 1L;
 }

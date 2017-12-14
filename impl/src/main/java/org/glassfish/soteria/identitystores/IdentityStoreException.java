@@ -42,15 +42,17 @@ package org.glassfish.soteria.identitystores;
 
 public class IdentityStoreException extends RuntimeException {
 
-  public IdentityStoreException(String message, Throwable cause) {
-    super(message,cause);
-  }
+    private static final long serialVersionUID = 1L;
 
-  public IdentityStoreException(Throwable cause) {
-    super(cause);
-  }
+    public IdentityStoreException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  public IdentityStoreException(String message) {
-    super(message);
-  }
+    public IdentityStoreException(Throwable cause) {
+        super(cause);
+    }
+
+    public IdentityStoreException(String message) {
+        super(message);
+    }
 }
