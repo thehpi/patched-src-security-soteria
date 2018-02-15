@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-
+// Portions Copyright [2018] Payara Foundation and/or affiliates
 package org.glassfish.soteria.mechanisms;
 
 import static java.lang.String.format;
@@ -77,7 +77,7 @@ public class BasicAuthenticationMechanism implements HttpAuthenticationMechanism
 	public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext httpMsgContext) throws AuthenticationException {
 
 		String[] credentials = getCredentials(request);
-		if (!isEmpty(credentials)) {
+		if (!isEmpty(credentials) && credentials.length > 1) {
 
             IdentityStoreHandler identityStoreHandler = CDI.current().select(IdentityStoreHandler.class).get();
 
