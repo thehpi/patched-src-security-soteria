@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-
+// Portions Copyright [2018] Payara Foundation and/or affiliates
 package org.glassfish.soteria.cdi;
 
 import static java.lang.Boolean.TRUE;
@@ -85,12 +85,14 @@ public class LoginToContinueInterceptor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Inject
-    private BeanManager beanManager;
+    private final BeanManager beanManager;
+    private final Bean<?> interceptedBean;
     
     @Inject
-    @Intercepted
-    private Bean<?> interceptedBean;
+    public LoginToContinueInterceptor(BeanManager beanManager, @Intercepted Bean<?> interceptedBean) {
+        this.beanManager = beanManager;
+        this.interceptedBean = interceptedBean;
+    }
 
     @AroundInvoke
     public Object intercept(InvocationContext invocationContext) throws Exception {

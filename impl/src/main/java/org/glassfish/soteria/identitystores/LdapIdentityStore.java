@@ -46,7 +46,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.list;
 import static java.util.Collections.unmodifiableSet;
-import static java.util.logging.Level.FINEST;
 import static javax.naming.Context.INITIAL_CONTEXT_FACTORY;
 import static javax.naming.Context.PROVIDER_URL;
 import static javax.naming.Context.SECURITY_AUTHENTICATION;
@@ -61,7 +60,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.naming.AuthenticationException;
 import javax.naming.CommunicationException;
@@ -89,19 +87,6 @@ public class LdapIdentityStore implements IdentityStore {
     private static final String DEFAULT_USER_FILTER = "(&(%s=%s)(|(objectclass=user)(objectclass=person)(objectclass=inetOrgPerson)(objectclass=organizationalPerson))(!(objectclass=computer)))";
     private static final String DEFAULT_GROUP_FILTER = "(&(%s=%s)(|(objectclass=group)(objectclass=groupofnames)(objectclass=groupofuniquenames)))";
 
-    private static final Logger LOGGER = Logger.getLogger("LDAP_IDSTORE_DEBUG");
-
-//    static {
-//        LOGGER.setLevel(FINEST);
-//    }
-
-    private static void debug(String method, String message, Throwable thrown) {
-        if (thrown != null) {
-            LOGGER.logp(FINEST, LdapIdentityStore.class.getName(), method, message, thrown);
-        } else {
-            LOGGER.logp(FINEST, LdapIdentityStore.class.getName(), method, message);
-        }
-    }
 
     private final LdapIdentityStoreDefinition ldapIdentityStoreDefinition;
     private final Set<ValidationType> validationTypes;
