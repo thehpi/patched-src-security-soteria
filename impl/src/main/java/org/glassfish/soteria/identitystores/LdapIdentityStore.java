@@ -55,6 +55,10 @@ import static javax.naming.directory.SearchControls.ONELEVEL_SCOPE;
 import static javax.naming.directory.SearchControls.SUBTREE_SCOPE;
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 import static javax.security.enterprise.identitystore.CredentialValidationResult.NOT_VALIDATED_RESULT;
+import static javax.security.enterprise.identitystore.IdentityStore.ValidationType.PROVIDE_GROUPS;
+import static javax.security.enterprise.identitystore.LdapIdentityStoreDefinition.LdapSearchScope.ONE_LEVEL;
+import static javax.security.enterprise.identitystore.LdapIdentityStoreDefinition.LdapSearchScope.SUBTREE;
+import static org.glassfish.soteria.Utils.isEmpty;
 
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -144,7 +148,7 @@ public class LdapIdentityStore implements IdentityStore {
         closeContext(callerContext);
 
         Set<String> groups = null;
-        if (validationTypes().contains(ValidationType.PROVIDE_GROUPS)) {
+        if (validationTypes().contains(PROVIDE_GROUPS)) {
             groups = retrieveGroupsForCallerDn(searchContext, callerDn);
         }
 
@@ -179,8 +183,7 @@ public class LdapIdentityStore implements IdentityStore {
     }
 
     private Set<String> retrieveGroupsForCallerDn(LdapContext searchContext, String callerDn) {
-
-        if (callerDn == null || callerDn.isEmpty()) {
+        if (isEmpty(callerDn)) {
             return emptySet();
         }
 
@@ -315,6 +318,7 @@ public class LdapIdentityStore implements IdentityStore {
         controls.setSearchScope(convertScopeValue(ldapIdentityStoreDefinition.callerSearchScope()));
         controls.setCountLimit((long)ldapIdentityStoreDefinition.maxResults());
         controls.setTimeLimit(ldapIdentityStoreDefinition.readTimeout());
+        
         return controls;
     }
 
@@ -324,19 +328,20 @@ public class LdapIdentityStore implements IdentityStore {
         controls.setCountLimit((long)ldapIdentityStoreDefinition.maxResults());
         controls.setTimeLimit(ldapIdentityStoreDefinition.readTimeout());
         controls.setReturningAttributes(new String[]{ldapIdentityStoreDefinition.groupNameAttribute()});
+        
         return controls;
     }
 
     private static int convertScopeValue(LdapSearchScope searchScope) {
-        if (searchScope == LdapSearchScope.ONE_LEVEL) {
+        if (searchScope == ONE_LEVEL) {
             return ONELEVEL_SCOPE;
         }
-        else if (searchScope == LdapSearchScope.SUBTREE) {
+        
+        if (searchScope == SUBTREE) {
             return SUBTREE_SCOPE;
         }
-        else {
-            return ONELEVEL_SCOPE;
-        }
+        
+        return ONELEVEL_SCOPE;        
     }
 
     private LdapContext createSearchLdapContext() {
