@@ -44,7 +44,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.glassfish.soteria</groupId>
-    <version>1.1-b01.payara-p4</version>
+    <version>1.1-b01.payara-p5-SNAPSHOT</version>
     <artifactId>javax.security.enterprise</artifactId>
 
     <packaging>jar</packaging>
