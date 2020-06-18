@@ -102,6 +102,8 @@ public class HttpBridgeServerAuthModule implements ServerAuthModule {
         mappings.put("Azure", Thread.currentThread().getContextClassLoader().loadClass("fish.payara.security.openid.azure.AzureOpenIdAuthenticationMechanism"));
         mappings.put("Google", Thread.currentThread().getContextClassLoader().loadClass("fish.payara.security.openid.google.GoogleOpenIdAuthenticationMechanism"));
         mappings.put("OAuth2", Thread.currentThread().getContextClassLoader().loadClass("fish.payara.security.oauth2.OAuth2AuthenticationMechanism"));
+        mappings.put("OIDC", Thread.currentThread().getContextClassLoader().loadClass("fish.payara.security.openid.OpenIdAuthenticationMechanism"));
+        mappings.put("TwoIdentityStore", Thread.currentThread().getContextClassLoader().loadClass("fish.payara.security.authentication.twoIdentityStore.TwoIdentityStoreAuthenticationMechanism"));
     }
 
         @Override
