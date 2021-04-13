@@ -172,41 +172,38 @@ public class CdiExtension implements Extension {
         Optional<FormAuthenticationMechanismDefinition> optionalFormMechanism = getAnnotation(beanManager, event.getAnnotated(), FormAuthenticationMechanismDefinition.class);
         optionalFormMechanism.ifPresent(formAuthenticationMechanismDefinition -> {
             logActivatedAuthenticationMechanism(FormAuthenticationMechanismDefinition.class, beanClass);
-
             authenticationMechanismBean = new CdiProducer<HttpAuthenticationMechanism>()
                     .scope(ApplicationScoped.class)
                     .beanClass(HttpAuthenticationMechanism.class)
                     .types(Object.class, HttpAuthenticationMechanism.class)
                     .addToId(FormAuthenticationMechanismDefinition.class)
                     .create(e -> {
-                        return CDI.current()
-                                .select(FormAuthenticationMechanism.class)
-                                .get()
-                                .loginToContinue(
-                                    LoginToContinueAnnotationLiteral.eval(
-                                        formAuthenticationMechanismDefinition.loginToContinue()));
+                        FormAuthenticationMechanism authMethod = CdiUtils.getBeanReference(FormAuthenticationMechanism.class);
+
+                        authMethod.setLoginToContinue(
+                                LoginToContinueAnnotationLiteral.eval(formAuthenticationMechanismDefinition.loginToContinue()));
+                        return authMethod;
                     });
         });
 
         Optional<CustomFormAuthenticationMechanismDefinition> optionalCustomFormMechanism = getAnnotation(beanManager, event.getAnnotated(), CustomFormAuthenticationMechanismDefinition.class);
         optionalCustomFormMechanism.ifPresent(customFormAuthenticationMechanismDefinition -> {
             logActivatedAuthenticationMechanism(CustomFormAuthenticationMechanismDefinition.class, beanClass);
-
             authenticationMechanismBean = new CdiProducer<HttpAuthenticationMechanism>()
                     .scope(ApplicationScoped.class)
                     .beanClass(HttpAuthenticationMechanism.class)
                     .types(Object.class, HttpAuthenticationMechanism.class)
                     .addToId(CustomFormAuthenticationMechanismDefinition.class)
                     .create(e -> {
-                        return CDI.current()
-                                  .select(CustomFormAuthenticationMechanism.class)
-                                  .get()
-                                  .loginToContinue(
-                                      LoginToContinueAnnotationLiteral.eval(
-                                        customFormAuthenticationMechanismDefinition.loginToContinue()));
+                        CustomFormAuthenticationMechanism authMethod = CdiUtils.getBeanReference(CustomFormAuthenticationMechanism.class);
 
+                        authMethod.setLoginToContinue(
+                                LoginToContinueAnnotationLiteral.eval(customFormAuthenticationMechanismDefinition.loginToContinue()));
+
+                        return authMethod;
                     });
         });
+
 
         if (event.getBean().getTypes().contains(HttpAuthenticationMechanism.class)) {
             // enabled bean implementing the HttpAuthenticationMechanism found

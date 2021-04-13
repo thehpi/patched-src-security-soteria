@@ -49,6 +49,7 @@ import static org.glassfish.soteria.mechanisms.jaspic.Jaspic.registerServerAuthM
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
@@ -57,6 +58,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 
 import org.glassfish.soteria.cdi.CdiExtension;
+import org.glassfish.soteria.cdi.CdiUtils;
 import org.glassfish.soteria.cdi.spi.CDIPerRequestInitializer;
 import org.glassfish.soteria.cdi.spi.impl.LibertyCDIPerRequestInitializer;
 import org.glassfish.soteria.mechanisms.jaspic.ContextAuthenticationMechanismMapping;
@@ -84,10 +86,11 @@ public class SamRegistrationInstaller implements ServletContainerInitializer, Se
 
         // Obtain a reference to the CdiExtension that was used to see if
         // there's an enabled bean
-        
-        CDI<Object> cdi;
+
+        BeanManager beanManager;
+
         try {
-            cdi = CDI.current();
+            beanManager = CdiUtils.getBeanManager();
             
             if (logger.isLoggable(INFO)) {
                 String version = getClass().getPackage().getImplementationVersion();
@@ -103,7 +106,7 @@ public class SamRegistrationInstaller implements ServletContainerInitializer, Se
             return;
         }
         
-        CdiExtension cdiExtension = cdi.select(CdiExtension.class).get();
+        CdiExtension cdiExtension = CdiUtils.getBeanReference(beanManager, CdiExtension.class);
 
         if (cdiExtension.isHttpAuthenticationMechanismFound()) {
 

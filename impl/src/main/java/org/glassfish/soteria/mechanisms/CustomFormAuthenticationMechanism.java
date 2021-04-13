@@ -40,8 +40,9 @@
 
 package org.glassfish.soteria.mechanisms;
 
+import org.glassfish.soteria.cdi.CdiUtils;
+
 import javax.enterprise.inject.Typed;
-import javax.enterprise.inject.spi.CDI;
 import javax.security.enterprise.AuthenticationException;
 import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.AutoApplySession;
@@ -72,8 +73,8 @@ public class CustomFormAuthenticationMechanism implements HttpAuthenticationMech
         
         if (hasCredential(httpMessageContext)) {
 
-            IdentityStoreHandler identityStoreHandler = CDI.current().select(IdentityStoreHandler.class).get();
-            
+            IdentityStoreHandler identityStoreHandler = CdiUtils.getBeanReference(IdentityStoreHandler.class);
+
             return httpMessageContext.notifyContainerAboutLogin(
                     identityStoreHandler.validate(
                     httpMessageContext.getAuthParameters()

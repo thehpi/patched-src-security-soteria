@@ -40,12 +40,8 @@
 // Portions Copyright [2018] Payara Foundation and/or affiliates
 package org.glassfish.soteria.mechanisms;
 
-import static java.lang.String.format;
-import static javax.security.enterprise.identitystore.CredentialValidationResult.Status.VALID;
-import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
-import static org.glassfish.soteria.Utils.isEmpty;
+import org.glassfish.soteria.cdi.CdiUtils;
 
-import javax.enterprise.inject.spi.CDI;
 import javax.security.enterprise.AuthenticationException;
 import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
@@ -57,6 +53,11 @@ import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStoreHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static java.lang.String.format;
+import static javax.security.enterprise.identitystore.CredentialValidationResult.Status.VALID;
+import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
+import static org.glassfish.soteria.Utils.isEmpty;
 
 
 /**
@@ -79,7 +80,7 @@ public class BasicAuthenticationMechanism implements HttpAuthenticationMechanism
 		String[] credentials = getCredentials(request);
 		if (!isEmpty(credentials) && credentials.length > 1) {
 
-            IdentityStoreHandler identityStoreHandler = CDI.current().select(IdentityStoreHandler.class).get();
+			IdentityStoreHandler identityStoreHandler = CdiUtils.getBeanReference(IdentityStoreHandler.class);
 
             CredentialValidationResult result = identityStoreHandler.validate(
                     new UsernamePasswordCredential(credentials[0], new Password(credentials[1])));

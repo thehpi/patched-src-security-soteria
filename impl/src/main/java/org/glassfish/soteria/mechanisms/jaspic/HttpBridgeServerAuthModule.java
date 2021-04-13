@@ -40,6 +40,7 @@
 
 package org.glassfish.soteria.mechanisms.jaspic;
 
+import org.glassfish.soteria.cdi.CdiUtils;
 import org.glassfish.soteria.cdi.spi.CDIPerRequestInitializer;
 import org.glassfish.soteria.mechanisms.BasicAuthenticationMechanism;
 import org.glassfish.soteria.mechanisms.CustomFormAuthenticationMechanism;
@@ -145,8 +146,7 @@ public class HttpBridgeServerAuthModule implements ServerAuthModule {
             }
 
             try {
-                HttpAuthenticationMechanism mechanismInstance = (HttpAuthenticationMechanism) CDI.current()
-                        .select(mechanismClassName).get();
+                HttpAuthenticationMechanism mechanismInstance = (HttpAuthenticationMechanism) CdiUtils.getBeanReference(mechanismClassName);
                 status = mechanismInstance
                             .validateRequest(
                                 msgContext.getRequest(),
@@ -181,8 +181,7 @@ public class HttpBridgeServerAuthModule implements ServerAuthModule {
             }
 
             try {
-                HttpAuthenticationMechanism mechanismInstance = (HttpAuthenticationMechanism) CDI.current()
-                        .select(mechanismClassName).get();
+                HttpAuthenticationMechanism mechanismInstance = (HttpAuthenticationMechanism) CdiUtils.getBeanReference(mechanismClassName);
                 AuthenticationStatus status = mechanismInstance
                                                  .secureResponse(
                                                      msgContext.getRequest(),
@@ -211,8 +210,7 @@ public class HttpBridgeServerAuthModule implements ServerAuthModule {
         public void cleanSubject(MessageInfo messageInfo, Subject subject) throws AuthException {
             HttpMessageContext msgContext = new HttpMessageContextImpl(handler, messageInfo, subject);
 
-            CDI.current()
-               .select(HttpAuthenticationMechanism.class).get()
+            CdiUtils.getBeanReference(HttpAuthenticationMechanism.class)
                .cleanSubject(msgContext.getRequest(), msgContext.getResponse(), msgContext);
         }
 
